@@ -1,0 +1,9 @@
+{
+    "data": ["/datasets/srp073813/"],
+    "tools": {
+        "STAR": "/opt/STAR-2.5.2b/bin/Linux_x86_64/STAR",
+        "kallisto": "/opt/kallisto_linux-v0.42.4/kallisto",
+        "bcftools": "/opt/bcftools-1.10.2/bcftools",
+        "FastQC": "/opt/FastQC/fastqc"
+    }
+}
