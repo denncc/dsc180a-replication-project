@@ -9,7 +9,7 @@ import os
 with open("./config/config.json") as f:
     config = json.load(f)
 
-# set the output directory
+# get the output directory
 fastq_output_dir = config["processed"]["fastq"]
 fastqc_dir = config["tools"]["FastQC"]
 
@@ -33,6 +33,9 @@ kallisto_out_dir = config["kallisto"]["out_dir"]
 
 # the function to retrieve the path for the datasets
 def data_retrieve():
+    """
+    the function to retrive the path for the datasets
+    """
     data_dir = config["data"][0]
     datasets = os.listdir(data_dir)
     datasets.sort()
@@ -44,6 +47,23 @@ def data_retrieve():
     for i in range(len(reference)):
         reference[i] = os.path.join(data_dir, reference[i])
     return result, reference
+
+def data_retrieve_test():
+    """
+    return the same format as data_retrieve()
+    """
+    test_dir = config["test"]["test_data_dir"]
+    data_dir = config["data"][0]
+    testsets = os.listdir(test_dir)
+    datasets = os.listdir(data_dir)
+    datasets.sort()
+    reference = datasets[-3:]
+    result = [[os.path.join(test_dir, testsets[0]), os.path.join(test_dir, testsets[1])]]
+    for i in range(len(reference)):
+        reference[i] = os.path.join(data_dir, reference[i])
+    return result, reference
+
+
 
 # quality control the datasets using the FastQC
 def run_fastqc(fastq_path, output_dir, options=["--extract",]):
@@ -96,15 +116,23 @@ def kallisto_quant(output, input1, input2):
 
 # main function
 def main():
-    datas, reference = data_retrieve()
-    sample = [datas[0], datas[1], datas[2]]
+    datas, reference = data_retrieve_test()
+    sample = datas
     # run fastq for analysis
+
+    # it turned out that the test file can only run on the whole dataset, so we skip FastQC
+
     # for fastq in sample:
     #     run_fastqc(fastq[0], fastq_output_dir)
     #     run_fastqc(fastq[1], fastq_output_dir)
     print(sample)
+    print(kallisto_dir)
+    print(kallisto_idx_dir)
+    print(kallisto_out_dir)
+    print(sample[0][0])
+    print(sample[0][1])
     for fastq in sample:
-        print(kallisto_quant(kallisto_out_dir, fastq[0], fastq[1]))
+        kallisto_quant(kallisto_out_dir, fastq[0], fastq[1])
 
 if __name__ == "__main__":
 

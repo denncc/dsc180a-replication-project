@@ -17,6 +17,6 @@
         "out_dir": "./data/processed/STAR"
     },
     "test": {
-        "test_data_dir": "./test/test_data"
+        "test_data_dir": "./test"
     }
 }
