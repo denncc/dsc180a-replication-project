@@ -5,5 +5,8 @@
         "kallisto": "/opt/kallisto_linux-v0.42.4/kallisto",
         "bcftools": "/opt/bcftools-1.10.2/bcftools",
         "FastQC": "/opt/FastQC/fastqc"
+    },
+    "processed": {
+        "fastq": "/data/processed/fastq"
     }
 }
