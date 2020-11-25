@@ -7,6 +7,16 @@
         "FastQC": "/opt/FastQC/fastqc"
     },
     "processed": {
-        "fastq": "/data/processed/fastq"
+        "fastq": "./data/processed/fastqc"
+    },
+    "kallisto": {
+        "index": "/datasets/srp073813/reference/kallisto_transcripts.idx",
+        "out_dir": "./data/processed/kallisto"
+    },
+    "STAR": {
+        "out_dir": "./data/processed/STAR"
+    },
+    "test": {
+        "test_data_dir": "./test/test_data"
     }
 }

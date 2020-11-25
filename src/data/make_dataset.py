@@ -13,6 +13,13 @@ with open("./config/config.json") as f:
 fastq_output_dir = config["processed"]["fastq"]
 fastqc_dir = config["tools"]["FastQC"]
 
+# Kallisto tool dir
+kallisto_dir = config["tools"]["kallisto"]
+# Kallisto index file
+kallisto_idx_dir = config["kallisto"]["index"]
+# Kallisto out dir
+kallisto_out_dir = config["kallisto"]["out_dir"]
+
 
 # @click.command()
 # @click.argument('input_filepath', type=click.Path(exists=True))
@@ -39,7 +46,7 @@ def data_retrieve():
     return result, reference
 
 # quality control the datasets using the FastQC
-def run_fastqc(fastq_path, output_dir):
+def run_fastqc(fastq_path, output_dir, options=["--extract",]):
     """
     Run the fastqc program on a specified fastq file and return the output directory path.
 
@@ -58,35 +65,46 @@ def run_fastqc(fastq_path, output_dir):
         The path to the directory containing the detailed output for this fastq file.
         It will be a subdirectory of the specified output dir.
     """
-    utils.mkdir_p(output_dir)
 
-    command = "fastqc {} -o {} {}".format(' '.join(options), output_dir, fastq_path)
-    subprocess.check_call(command, shell=True)
+    command = "/opt/FastQC/fastqc {} -t 8 -o {} {}".format(' '.join(options), output_dir, fastq_path)
+    # subprocess.check_call(command, shell=True)
+    os.system(command)
 
     # Fastqc creates a directory derived from the basename
     fastq_dir = os.path.basename(fastq_path)
-    if fastq_dir.endswith(".gz"):
-        fastq_dir = fastq_dir[0:-3]
-    if fastq_dir.endswith(".fq"):
-        fastq_dir = fastq_dir[0:-3]
-    if fastq_dir.endswith(".fastq"):
-        fastq_dir = fastq_dir[0:-6]
+    fastq_dir = fastq_dir[0:-9]
     fastq_dir = fastq_dir + "_fastqc"
 
-    # Delete the zip file and keep the uncompressed directory
+    # Delete the zip and html file and keep the uncompressed directory
     zip_file = os.path.join(output_dir, fastq_dir + ".zip")
+    html_file = os.path.join(output_dir, fastq_dir + ".html")
     os.remove(zip_file)
+    os.remove(html_file)
+
 
     output_dir = os.path.join(output_dir, fastq_dir)
     return output_dir
 
+# quantify the sequences using kallisto
+def kallisto_quant(output, input1, input2):
+    '''
+    Quantify the RNA-sequence using kallisto
+    '''
+    command = f"{kallisto_dir} quant -i {kallisto_idx_dir} -o {kallisto_out_dir} -t 8 {input1} {input2}"
+    return output
 
 
 # main function
 def main():
     datas, reference = data_retrieve()
-    sample = datas[0]
+    sample = [datas[0], datas[1], datas[2]]
+    # run fastq for analysis
+    # for fastq in sample:
+    #     run_fastqc(fastq[0], fastq_output_dir)
+    #     run_fastqc(fastq[1], fastq_output_dir)
     print(sample)
+    for fastq in sample:
+        print(kallisto_quant(kallisto_out_dir, fastq[0], fastq[1]))
 
 if __name__ == "__main__":
 
