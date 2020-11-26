@@ -14,11 +14,11 @@ fastq_output_dir = config["processed"]["fastq"]
 fastqc_dir = config["tools"]["FastQC"]
 
 # Kallisto tool dir
-kallisto_dir = config["tools"]["kallisto"]
+kallisto_dir = config["tools"]["kallisto"]["tool_dir"]
 # Kallisto index file
-kallisto_idx_dir = config["kallisto"]["index"]
+kallisto_idx_dir = config["tools"]["kallisto"]["index"]
 # Kallisto out dir
-kallisto_out_dir = config["kallisto"]["out_dir"]
+kallisto_out_dir = config["processed"]["kallisto"]
 
 
 # @click.command()
@@ -110,35 +110,52 @@ def kallisto_quant(output, input1, input2):
     '''
     Quantify the RNA-sequence using kallisto
     '''
-    command = f"{kallisto_dir} quant -i {kallisto_idx_dir} -o {kallisto_out_dir} -t 8 {input1} {input2}"
+    output = os.path.join(output, input1[17:-11])
+    if not os.path.exists(output):
+        os.makedirs(output)
+    command = f'{kallisto_dir} quant -i {kallisto_idx_dir} -o {output} -t 8 {input1} {input2}'
+    os.system(command)
     return output
 
 
 # main function
 def main():
-    datas, reference = data_retrieve_test()
-    sample = datas
     # run fastq for analysis
-
+    datas, reference = data_retrieve()
     # it turned out that the test file can only run on the whole dataset, so we skip FastQC
 
-    # for fastq in sample:
-    #     run_fastqc(fastq[0], fastq_output_dir)
-    #     run_fastqc(fastq[1], fastq_output_dir)
-    print(sample)
-    print(kallisto_dir)
-    print(kallisto_idx_dir)
-    print(kallisto_out_dir)
-    print(sample[0][0])
-    print(sample[0][1])
-    for fastq in sample:
+    for fastq in datas:
+        run_fastqc(fastq[0], fastq_output_dir)
+        run_fastqc(fastq[1], fastq_output_dir)
+
+    # print(sample)
+    # print(kallisto_dir)
+    # print(kallisto_idx_dir)
+    # print(kallisto_out_dir)
+    # print(sample[0][0])
+    # print(sample[0][1])
+    for fastq in datas:
         kallisto_quant(kallisto_out_dir, fastq[0], fastq[1])
+
+def test():
+    """
+    process on the test dataset
+    """
+    print("run on the test set")
+    test_processed_dir = config["test"]["test_processed_dir"]["kallisto"]
+    datas, reference = data_retrieve_test()
+    sample = datas
+    # for factqc, the test file is truncated so it cannot be ran
+
+    # kallisto
+    for fastq in sample:
+        kallisto_quant(test_processed_dir, fastq[0], fastq[1])
 
 if __name__ == "__main__":
 
     print("Executing make_dataset.py on command line")
 
-elif __name__ == 'src.data.make_dataset':
+# elif __name__ == 'src.data.make_dataset':
     # log_fmt = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
     # logging.basicConfig(level=logging.INFO, format=log_fmt)
 
@@ -148,6 +165,7 @@ elif __name__ == 'src.data.make_dataset':
     # # find .env automagically by walking up directories until it's found, then
     # # load up the .env entries as environment variables
     # load_dotenv(find_dotenv())
-    print("src/data/make_dataset.py is imported, and data is being processed")
-    main()
-    print("data processing is done")
+    # print("src/data/make_dataset.py is imported, and data is being processed")
+    # main()
+    # print("data processing is done")
+    # return
