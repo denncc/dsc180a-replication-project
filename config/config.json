@@ -15,11 +15,11 @@
     },
     "processed": {
         "fastq": "./data/processed/fastqc",
-        "kallisto": ".data/processed/kallisto",
+        "kallisto": "./data/processed/kallisto",
         "STAR": "./data/processed/STAR"
     },
     "test": {
-        "test_data_dir": "./test/test_data",
+        "test_data_dir": "./test/test_data/test_1",
         "test_processed_dir": {
             "kallisto": "./data/processed/kallisto"
         }

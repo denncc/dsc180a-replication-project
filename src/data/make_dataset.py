@@ -123,10 +123,10 @@ def main():
     # run fastq for analysis
     datas, reference = data_retrieve()
     # it turned out that the test file can only run on the whole dataset, so we skip FastQC
-
-    for fastq in datas:
-        run_fastqc(fastq[0], fastq_output_dir)
-        run_fastqc(fastq[1], fastq_output_dir)
+    print(len(datas))
+    for pair in datas:
+        run_fastqc(pair[0], fastq_output_dir)
+        run_fastqc(pair[1], fastq_output_dir)
 
     # print(sample)
     # print(kallisto_dir)
@@ -134,8 +134,9 @@ def main():
     # print(kallisto_out_dir)
     # print(sample[0][0])
     # print(sample[0][1])
-    for fastq in datas:
-        kallisto_quant(kallisto_out_dir, fastq[0], fastq[1])
+
+    # for pair in datas:
+    #     kallisto_quant(kallisto_out_dir, pair[0], pair[1])
 
 def test():
     """
