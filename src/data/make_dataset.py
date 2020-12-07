@@ -6,24 +6,20 @@ import json
 import os
 
 # get the config file
-with open("./config/data_config.json") as f:
-    data_config = json.load(f)
+with open("./config/config.json") as f:
+    config = json.load(f)
 
 # get the output directory
-fastq_output_dir = data_config["processed"]["fastq"]
-fastqc_dir = data_config["tools"]["FastQC"]
+fastq_output_dir = config["processed"]["fastq"]
+fastqc_dir = config["tools"]["FastQC"]
 
 # Kallisto tool dir
-kallisto_dir = data_config["tools"]["kallisto"]["tool_dir"]
+kallisto_dir = config["tools"]["kallisto"]["tool_dir"]
 # Kallisto index file
-kallisto_idx_dir = data_config["tools"]["kallisto"]["index"]
+kallisto_idx_dir = config["tools"]["kallisto"]["index"]
 # Kallisto out dir
-kallisto_out_dir = data_config["processed"]["kallisto"]
+kallisto_out_dir = config["processed"]["kallisto"]
 
-# test processed  dirs
-test_processed_dir = data_config["test"]["test_processed_dir"]["kallisto"]
-test_dir = data_config["test"]["test_data_dir"]
-data_dir = data_config["data"][0]
 
 # @click.command()
 # @click.argument('input_filepath', type=click.Path(exists=True))
@@ -56,6 +52,8 @@ def data_retrieve_test():
     """
     return the same format as data_retrieve()
     """
+    test_dir = config["test"]["test_data_dir"]
+    data_dir = config["data"][0]
     testsets = os.listdir(test_dir)
     datasets = os.listdir(data_dir)
     datasets.sort()
@@ -107,12 +105,6 @@ def run_fastqc(fastq_path, output_dir, options=["--extract",]):
     output_dir = os.path.join(output_dir, fastq_dir)
     return output_dir
 
-def check_fastqc_adapter(fastqc_path):
-    """
-    input a fastqc_path, evaluation whether this quality control passes adapter check
-    """
-    return
-
 # quantify the sequences using kallisto
 def kallisto_quant(output, input1, input2):
     '''
@@ -132,13 +124,10 @@ def main():
     datas, reference = data_retrieve()
     # it turned out that the test file can only run on the whole dataset, so we skip FastQC
     print(len(datas))
-    datas = datas[255:]
-    print(datas[0])
     for pair in datas:
         run_fastqc(pair[0], fastq_output_dir)
         run_fastqc(pair[1], fastq_output_dir)
 
-    
     # print(sample)
     # print(kallisto_dir)
     # print(kallisto_idx_dir)
@@ -154,13 +143,14 @@ def test():
     process on the test dataset
     """
     print("run on the test set")
+    test_processed_dir = config["test"]["test_processed_dir"]["kallisto"]
     datas, reference = data_retrieve_test()
     sample = datas
     # for factqc, the test file is truncated so it cannot be ran
 
     # kallisto
-    for pair in sample:
-        kallisto_quant(test_processed_dir, pair[0], pair[1])
+    for fastq in sample:
+        kallisto_quant(test_processed_dir, fastq[0], fastq[1])
 
 if __name__ == "__main__":
 

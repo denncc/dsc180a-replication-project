@@ -19,8 +19,9 @@
         "STAR": "./data/processed/STAR"
     },
     "test": {
-        "test_data_dir": "./test/test_data",
-        "test_processed_dir": {"kallisto": "./data/processed/kallisto"},
-        "test_kallisto_data": "./test/test_kallisto_data"
+        "test_data_dir": "./test/test_data/test_1",
+        "test_processed_dir": {
+            "kallisto": "./data/processed/kallisto"
+        }
     }
 }
