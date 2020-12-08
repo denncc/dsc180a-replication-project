@@ -40,7 +40,7 @@ def data_retrieve():
     """
     the function to retrive the path for the datasets
     """
-    data_dir = config["data"][0]
+    data_dir = data_config["data"][0]
     datasets = os.listdir(data_dir)
     datasets.sort()
     reference = datasets[-3:]
@@ -118,7 +118,7 @@ def kallisto_quant(output, input1, input2):
     '''
     Quantify the RNA-sequence using kallisto
     '''
-    output = os.path.join(output, input1[17:-11])
+    output = os.path.join(output, input1[20:-11])
     if not os.path.exists(output):
         os.makedirs(output)
     command = f'{kallisto_dir} quant -i {kallisto_idx_dir} -o {output} -t 8 {input1} {input2}'
@@ -132,11 +132,13 @@ def main():
     datas, reference = data_retrieve()
     # it turned out that the test file can only run on the whole dataset, so we skip FastQC
     print(len(datas))
-    datas = datas[255:]
-    print(datas[0])
-    for pair in datas:
-        run_fastqc(pair[0], fastq_output_dir)
-        run_fastqc(pair[1], fastq_output_dir)
+    fastqc_datas = datas[291:]
+    kallisto_datas = datas
+    # print(fastqc_datas[0])
+    # print(kallisto_datas[0])
+    # for pair in datas:
+    #     run_fastqc(pair[0], fastq_output_dir)
+    #     run_fastqc(pair[1], fastq_output_dir)
 
     
     # print(sample)
@@ -146,8 +148,8 @@ def main():
     # print(sample[0][0])
     # print(sample[0][1])
 
-    # for pair in datas:
-    #     kallisto_quant(kallisto_out_dir, pair[0], pair[1])
+    for pair in kallisto_datas:
+        kallisto_quant(kallisto_out_dir, pair[0], pair[1])
 
 def test():
     """
@@ -161,6 +163,15 @@ def test():
     # kallisto
     for pair in sample:
         kallisto_quant(test_processed_dir, pair[0], pair[1])
+
+
+def check():
+    """
+    check on the processed data their amount, adapter test and etc..
+    """
+    # print(os.listdir(fastq_output_dir))
+    print("FastQC number of pairs: ", len(os.listdir(fastq_output_dir))/2)
+    return
 
 if __name__ == "__main__":
 

@@ -12,6 +12,10 @@ def main(target):
     elif target == "test":
         dm.test()
         print("finished running on the test target")
+    elif target == "check":
+        print("start performing checking on the processed dat")
+        dm.check()
+        print("checking process has been performed")
 
 if __name__ == "__main__":
     target = sys.argv[-1]
