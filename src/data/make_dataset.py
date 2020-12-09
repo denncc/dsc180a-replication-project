@@ -132,13 +132,13 @@ def main():
     datas, reference = data_retrieve()
     # it turned out that the test file can only run on the whole dataset, so we skip FastQC
     print(len(datas))
-    fastqc_datas = datas[291:]
-    kallisto_datas = datas
+    fastqc_datas = datas[332:]
+    kallisto_datas = datas[21:]
     # print(fastqc_datas[0])
     # print(kallisto_datas[0])
-    # for pair in datas:
-    #     run_fastqc(pair[0], fastq_output_dir)
-    #     run_fastqc(pair[1], fastq_output_dir)
+    for pair in fastqc_datas:
+        run_fastqc(pair[0], fastq_output_dir)
+        run_fastqc(pair[1], fastq_output_dir)
 
     
     # print(sample)
@@ -148,8 +148,8 @@ def main():
     # print(sample[0][0])
     # print(sample[0][1])
 
-    for pair in kallisto_datas:
-        kallisto_quant(kallisto_out_dir, pair[0], pair[1])
+    # for pair in kallisto_datas:
+    #     kallisto_quant(kallisto_out_dir, pair[0], pair[1])
 
 def test():
     """
@@ -161,8 +161,8 @@ def test():
     # for factqc, the test file is truncated so it cannot be ran
 
     # kallisto
-    for pair in sample:
-        kallisto_quant(test_processed_dir, pair[0], pair[1])
+    # for pair in sample:
+    #     kallisto_quant(test_processed_dir, pair[0], pair[1])
 
 
 def check():
@@ -170,7 +170,7 @@ def check():
     check on the processed data their amount, adapter test and etc..
     """
     # print(os.listdir(fastq_output_dir))
-    print("FastQC number of pairs: ", len(os.listdir(fastq_output_dir))/2)
+    print("FastQC number of pairs: ", int(len(os.listdir(fastq_output_dir))/2))
     return
 
 if __name__ == "__main__":

@@ -1,0 +1,8 @@
+{
+    "processed": {
+        "fastq": "./data/processed/fastqc",
+        "kallisto": "./data/processed/kallisto",
+        "STAR": "./data/processed/STAR"
+    }, 
+    "r_script_dir": "./src/features/r_scripts/test.R"
+}
