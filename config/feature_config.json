@@ -5,5 +5,8 @@
         "STAR": "./data/processed/STAR"
     }, 
     "r_script_dir": "./src/features/r_scripts/test.R",
-    "sraruntable_dir": "./data/SraRunTable.csv"
+    "sraruntable_dir": "./data/SraRunTable.csv",
+    "features": {
+        "deseq_cts_matrix_dir": "./data/deseq_cts.tsv"
+    }
 }
