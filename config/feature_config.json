@@ -4,5 +4,6 @@
         "kallisto": "./data/processed/kallisto",
         "STAR": "./data/processed/STAR"
     }, 
-    "r_script_dir": "./src/features/r_scripts/test.R"
+    "r_script_dir": "./src/features/r_scripts/test.R",
+    "sraruntable_dir": "./data/SraRunTable.csv"
 }

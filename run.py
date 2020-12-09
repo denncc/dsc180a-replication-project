@@ -13,9 +13,16 @@ def main(target):
     elif target == "test":
         # dm.test()
         # print("finished running on the test target")
-        print("start testing on feature generating\n")
-        bf.test_r()
-        print("\nfinish testing on feature generating")
+
+
+        # print("start testing on feature generating\n")
+        # bf.test_r()
+        # print("\nfinish testing on feature generating")
+
+
+        print("start test on making cts matrix for DESeq2\n")
+        bf.make_cts()
+        print("\nfinished")
 
     elif target == "check":
         print("start performing checking on the processed data")
