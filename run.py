@@ -21,7 +21,7 @@ def main(target):
 
 
         print("start test on making cts matrix for DESeq2\n")
-        bf.make_cts()
+        bf.main()
         print("\nfinished")
 
     elif target == "check":

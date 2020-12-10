@@ -29,25 +29,34 @@ coldata <- coldata[,c("condition","type")]
 coldata$condition <- factor(coldata$condition)
 coldata$type <- factor(coldata$type)
 
-# our data
-temp <- as.matrix(read.csv("./data/SraRunTable.csv"))
-our_cts <- as.matrix(read.csv("./data/deseq_cts.tsv", sep="\t"), row.names("target_id"))
+# import our data
+our_cts <- as.matrix(read.csv("./data/features/deseq_cts.tsv", sep="\t",row.names="target_id"))
+our_coldata <- read.csv("./data/features/coldata.csv", row.names = "Run")
+our_coldata$Age <- factor(our_coldata$Age)
+our_coldata$PMI <- factor(our_coldata$PMI)
+our_coldata$pH <- factor(our_coldata$pH)
+our_coldata$brain_region <- factor(our_coldata$brain_region)
+our_coldata$Disorder <- factor(our_coldata$Disorder)
 
 # look at the data
-head(cts,2)
-coldata
+head(our_cts,2)
+head(our_coldata, 2)
 
 # not in same order! 
 rownames(coldata) <- sub("fb", "", rownames(coldata))
 
 # the same samples
 all(rownames(coldata) %in% colnames(cts))
+all(rownames(our_coldata) %in% colnames(our_cts))
 # but not the same order!
 all(rownames(coldata) == colnames(cts))
+all(rownames(our_coldata) == colnames(our_cts))
 
 # sort to be in the same order
 cts <- cts[, rownames(coldata)]
+our_cts <- our_cts[, rownames(our_coldata)]
 all(rownames(coldata) == colnames(cts))
+all(rownames(our_coldata) == colnames(our_cts))
 
 # ---------------- DESeqDataSet ---------------- #
 
@@ -56,6 +65,11 @@ dds <- DESeqDataSetFromMatrix(countData = cts,
                               colData = coldata,
                               design = ~ condition)
 dds
+
+# create our DESeqDataSet object
+our_dds <- DESeqDataSetFromMatrix(countData = our_cts,
+                                  colData = our_coldata,
+                                  design = ~ PMI + pH + Disorder)
 
 # set up metadata
 featureData <- data.frame(gene=rownames(cts))

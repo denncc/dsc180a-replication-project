@@ -5,8 +5,15 @@
         "STAR": "./data/processed/STAR"
     }, 
     "r_script_dir": "./src/features/r_scripts/test.R",
-    "sraruntable_dir": "./data/SraRunTable.csv",
+    "sraruntable_dir": "./data/raw/SraRunTable.csv",
     "features": {
-        "deseq_cts_matrix_dir": "./data/deseq_cts.tsv"
+        "deseq_cts_matrix_dir": "./data/features/deseq_cts.tsv",
+        "covariates": {
+            "dir": "./data/features/coldata.csv",
+            "columns": {
+                "in_cols": ["age_at_death", "post-mortem_interval", "Brain_pH", "brain_region", "clinical_diagnosis"],
+                "out_cols": ["Age", "PMI", "pH", "brain_region", "Disorder"]
+            }
+        }
     }
 }

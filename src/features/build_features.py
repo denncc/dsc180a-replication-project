@@ -12,6 +12,12 @@ r_scipt_dir = feature_config["r_script_dir"]
 kallisto_out_dir = feature_config["processed"]["kallisto"]
 # dir for DESeq2 output dir
 deseq_cts_matrix_dir = feature_config["features"]["deseq_cts_matrix_dir"]
+# covariates dir from the SRAruntable
+covariates_dir = feature_config["features"]["covariates"]["dir"]
+covariates_in_cols = feature_config["features"]["covariates"]["columns"]["in_cols"]
+covariates_out_cols = feature_config["features"]["covariates"]["columns"]["out_cols"]
+# sraruntable_dir table dir
+sraruntable_dir = feature_config["sraruntable_dir"]
 
 def test_r():
     """
@@ -35,7 +41,29 @@ def make_cts():
         df = pd.read_csv(abundances_dir, sep="\t")
         df = df.set_index("target_id")
         est_counts = df.est_counts
-        result[pair] = est_counts
+        result[pair] = est_counts.round(0).astype(int)
     result.to_csv(deseq_cts_matrix_dir, sep="\t")
     # print(abundances_dir)
+    return
+
+def make_coldata():
+    """
+    This methood doesn't have an input, but rather takes in SraRunTable.csv to build the input covariates for 
+    DESeq object
+    """
+    df = pd.read_csv(sraruntable_dir).set_index("Run")
+    df = df[covariates_in_cols].rename(dict(zip(covariates_in_cols, covariates_out_cols)), axis = 1)
+    print("Determine if there is null value in the csv. \n", df.isna().sum())
+    df.pH = df.pH.fillna(df.pH.mean())
+    print("Determine again if there is null value. \n", df.isna().sum())    
+    df.to_csv(covariates_dir)
+    return
+
+
+def main():
+    """
+    Main function to call on other methods in this file
+    """
+    # make_cts()
+    make_coldata()
     return
