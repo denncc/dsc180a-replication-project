@@ -13,9 +13,14 @@ kallisto_out_dir = feature_config["processed"]["kallisto"]
 # dir for DESeq2 output dir
 deseq_cts_matrix_dir = feature_config["features"]["deseq_cts_matrix_dir"]
 # covariates dir from the SRAruntable
-covariates_dir = feature_config["features"]["covariates"]["dir"]
-covariates_in_cols = feature_config["features"]["covariates"]["columns"]["in_cols"]
-covariates_out_cols = feature_config["features"]["covariates"]["columns"]["out_cols"]
+covariates = feature_config["features"]["covariates"]
+covariates_dir = covariates["dir"]
+covariates_in_cols = covariates["columns"]["in_cols"]
+covariates_out_cols = covariates["columns"]["out_cols"]
+disorders = covariates["disorders"]
+brain_regions = covariates["brain_regions"]
+abbr = covariates["disorders_abbr"]
+num_cov = covariates["num"]
 # sraruntable_dir table dir
 sraruntable_dir = feature_config["sraruntable_dir"]
 
@@ -51,12 +56,18 @@ def make_coldata():
     This methood doesn't have an input, but rather takes in SraRunTable.csv to build the input covariates for 
     DESeq object
     """
-    df = pd.read_csv(sraruntable_dir).set_index("Run")
-    df = df[covariates_in_cols].rename(dict(zip(covariates_in_cols, covariates_out_cols)), axis = 1)
-    print("Determine if there is null value in the csv. \n", df.isna().sum())
-    df.pH = df.pH.fillna(df.pH.mean())
-    print("Determine again if there is null value. \n", df.isna().sum())    
-    df.to_csv(covariates_dir)
+    # df = pd.read_csv(sraruntable_dir).set_index("Run")
+    # df = df[covariates_in_cols].rename(dict(zip(covariates_in_cols, covariates_out_cols)), axis = 1)
+    # print("Determine if there is null value in the csv. \n", df.isna().sum())
+    # df.pH = df.pH.fillna(df.pH.mean())
+    # print("Determine again if there is null value. \n", df.isna().sum())    
+    # df.to_csv(covariates_dir)
+
+    print(brain_regions)
+    print(disorders)
+    for i in range(num_cov):
+        for j in range(num_cov):
+            print(disorders[i], brain_regions[j])
     return
 
 

@@ -13,7 +13,11 @@
             "columns": {
                 "in_cols": ["age_at_death", "post-mortem_interval", "Brain_pH", "brain_region", "clinical_diagnosis"],
                 "out_cols": ["Age", "PMI", "pH", "brain_region", "Disorder"]
-            }
+            }, 
+            "disorders": ["Major Depression", "Bipolar Disorder", "Schizophrenia", "Control"],
+            "brain_regions": ["AnCg", "nAcc", "DLPFC"],
+            "disorders_abbr": ["MD", "BP", "SZ"],
+            "num": 3
         }
     }
 }
