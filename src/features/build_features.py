@@ -51,23 +51,52 @@ def make_cts():
     # print(abundances_dir)
     return
 
-def make_coldata():
+def make_subcoldata():
     """
     This methood doesn't have an input, but rather takes in SraRunTable.csv to build the input covariates for 
     DESeq object
     """
-    # df = pd.read_csv(sraruntable_dir).set_index("Run")
-    # df = df[covariates_in_cols].rename(dict(zip(covariates_in_cols, covariates_out_cols)), axis = 1)
-    # print("Determine if there is null value in the csv. \n", df.isna().sum())
-    # df.pH = df.pH.fillna(df.pH.mean())
-    # print("Determine again if there is null value. \n", df.isna().sum())    
-    # df.to_csv(covariates_dir)
-
-    print(brain_regions)
-    print(disorders)
+    df = pd.read_csv(sraruntable_dir).set_index("Run")
+    df = df[covariates_in_cols].rename(dict(zip(covariates_in_cols, covariates_out_cols)), axis = 1)
+    print("Determine if there is null value in the csv. \n", df.isna().sum())
+    df.pH = df.pH.fillna(df.pH.mean())
+    print("Determine again if there is null value. \n", df.isna().sum())    
+    df.to_csv(covariates_dir)
+    cts_df = pd.read_csv(deseq_cts_matrix_dir, sep="\t").set_index("target_id")
+    print(cts_df)
     for i in range(num_cov):
         for j in range(num_cov):
-            print(disorders[i], brain_regions[j])
+            cond = (df.brain_region == brain_regions[i]) & (df.Disorder.isin(["Control", disorders[j]]))
+
+            subcoldata = df[cond]
+            subcoldata_name = "subcoldata_" + brain_regions[i] + "_" + abbr[j] + ".csv"
+            subcoldata_dir = "./data/features/subcoldata/" + subcoldata_name
+
+            subcts_name = "subcts_" + brain_regions[i] + "_" + abbr[j] + ".csv"
+            subcts_cond = cond[cond != 0].index.tolist()
+            subcts = cts_df[subcts_cond]
+            subcts_dir = "./data/features/subcts/" + subcts_name
+            
+            print(subcoldata_dir, subcts_dir)
+            subcoldata.to_csv(subcoldata_dir)
+            subcts.to_csv(subcts_dir)
+    return
+
+
+def make_lfc_data():
+    """
+    This method doesn't have an input, but rather takes in the lrt result of R and 
+    make them suitable for visualiztion
+    """
+    lrt_dirs = feature_config["features"]["lrt"]
+    outdir = feature_config["lfc_data_dir"]
+    res = pd.DataFrame()
+    for lrt_dir in lrt_dirs:
+        df = pd.read_csv(lrt_dir, index_col=0)
+        name = lrt_dir[26:-4]
+        res[name] = df["log2FoldChange"]
+    print(res)
+    res.to_csv(outdir)
     return
 
 
@@ -76,5 +105,6 @@ def main():
     Main function to call on other methods in this file
     """
     # make_cts()
-    make_coldata()
+    # make_subcoldata()
+    make_lfc_data()
     return

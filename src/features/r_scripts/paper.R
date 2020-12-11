@@ -67,7 +67,7 @@ for (i in c(1)) {
     dds <- dds[keep,]
     
     # factors in R
-    dds$Disorder <- factor(dds$Disorder, levels = c("Control", dn[j]))
+    dds$Disorder <- factor(dds$Disorder, levels = c(dn[j], "Control"))
     print(dn[j])
     
     # ----------------- DEA ---------------------- #
@@ -76,8 +76,6 @@ for (i in c(1)) {
     dds <- DESeq(dds, test = "LRT", reduced = ~Age + PMI + pH)
     res <- results(dds)
     
-    # carries out VST
-    vstname = gsub(" ", ".", paste("Disorder", dn[j], "vs", "Control", sep = "_"))
     
     outdir = paste("./data/features/LRT/paper", dataname, sep = "/")
     print(outdir)
