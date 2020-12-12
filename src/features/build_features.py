@@ -51,35 +51,32 @@ def make_cts():
     # print(abundances_dir)
     return
 
-<<<<<<< HEAD
 def make_cts_test():
     """
-    This method doesn't have an input, but rather takes 352 abundance.tsv in the processed
+    This method doesn't have an input, but rather takes test abundance.tsv in the processed
     Kallisto directory, and makes a matrix that counts different subfeatures.
     """
-    abundances_dirs = os.listdir(kallisto_out_dir)
+    abundances_dirs = os.listdir("./test/test_data/processed/kallisto")
     abundances_dirs.sort()
     # cols_name = pd.read_csv(os.path.join(kallisto_out_dir, abundances_dirs[0], "abundance.tsv"), sep="\t").target_id
     # print(cols_name)
     result = pd.DataFrame()
     for pair in abundances_dirs:
-        abundances_dir = os.path.join(kallisto_out_dir, pair, "abundance.tsv")
+        abundances_dir = os.path.join("./test/test_data/processed/kallisto", pair, "abundance.tsv")
         df = pd.read_csv(abundances_dir, sep="\t")
         df = df.set_index("target_id")
         est_counts = df.est_counts
         result[pair] = est_counts.round(0).astype(int)
-    result.to_csv(deseq_cts_matrix_dir, sep="\t")
+    result.to_csv("./test/test_data/test_cts.csv", sep="\t")
     # print(abundances_dir)
     return
 
 def make_coldata():
-=======
-def make_subcoldata():
->>>>>>> 234f32d4a5f180d6b009daf6dbc9bdfed7db9844
     """
     This methood doesn't have an input, but rather takes in SraRunTable.csv to build the input covariates for 
     DESeq object
     """
+    print(sraruntable_dir)
     df = pd.read_csv(sraruntable_dir).set_index("Run")
     df = df[covariates_in_cols].rename(dict(zip(covariates_in_cols, covariates_out_cols)), axis = 1)
     print("Determine if there is null value in the csv. \n", df.isna().sum())
@@ -100,6 +97,41 @@ def make_subcoldata():
             subcts_cond = cond[cond != 0].index.tolist()
             subcts = cts_df[subcts_cond]
             subcts_dir = "./data/features/subcts/" + subcts_name
+            
+            print(subcoldata_dir, subcts_dir)
+            subcoldata.to_csv(subcoldata_dir)
+            subcts.to_csv(subcts_dir)
+    return
+
+
+def make_coldata_test():
+    """
+    This methood doesn't have an input, but rather takes in SraRunTable.csv to build the input covariates for 
+    DESeq object
+    """
+    print(sraruntable_dir)
+    df = pd.read_csv(sraruntable_dir).set_index("Run")
+    df = df.iloc[:16,]
+    # df = df[df.columns.to_list()[:16]]
+    df = df[covariates_in_cols].rename(dict(zip(covariates_in_cols, covariates_out_cols)), axis = 1)
+    # print("Determine if there is null value in the csv. \n", df.isna().sum())
+    df.pH = df.pH.fillna(df.pH.mean())
+    # print("Determine again if there is null value. \n", df.isna().sum())
+
+    cts_df = pd.read_csv("./test/test_data/test_cts.csv", sep="\t").set_index("target_id")
+    print(cts_df)
+    for i in range(num_cov):
+        for j in range(num_cov):
+            cond = (df.brain_region == brain_regions[i]) & (df.Disorder.isin(["Control", disorders[j]]))
+
+            subcoldata = df[cond]
+            subcoldata_name = "subcoldata_" + brain_regions[i] + "_" + abbr[j] + ".csv"
+            subcoldata_dir = "./test/test_data/features/subcoldata/" + subcoldata_name
+
+            subcts_name = "subcts_" + brain_regions[i] + "_" + abbr[j] + ".csv"
+            subcts_cond = cond[cond != 0].index.tolist()
+            subcts = cts_df[subcts_cond]
+            subcts_dir = "./test/test_data/features/subcts/" + subcts_name
             
             print(subcoldata_dir, subcts_dir)
             subcoldata.to_csv(subcoldata_dir)
@@ -128,11 +160,11 @@ def main():
     """
     Main function to call on other methods in this file
     """
-<<<<<<< HEAD
     if not os.path.exists("./data/features"):
         os.makedirs("./data/features")
     make_cts()
-    # make_coldata()
+    make_coldata()
+    subprocess.call(["R", ""])
     return
 
 
@@ -141,9 +173,4 @@ def test():
     Test function to check build features
     """
     make_cts_test()
-=======
-    # make_cts()
-    # make_subcoldata()
-    make_lfc_data()
-    return
->>>>>>> 234f32d4a5f180d6b009daf6dbc9bdfed7db9844
+    make_coldata_test()

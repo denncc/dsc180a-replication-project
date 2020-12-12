@@ -19,12 +19,6 @@
             "brain_regions": ["AnCg", "nAcc", "DLPFC"],
             "disorders_abbr": ["MD", "BP", "SZ"],
             "num": 3
-<<<<<<< HEAD
-        }
-    },
-    "test": {
-        "kallisto_out": "./test/test_data/processed/kallisto"
-=======
         },
         "subcoldata": [
             "./data/features/subcoldata/subcoldata_AnCg_MD.csv",
@@ -59,6 +53,5 @@
             "./data/features/LRT/paper/DLPFC_BP.csv",
             "./data/features/LRT/paper/DLPFC_SZ.csv"
         ]
->>>>>>> 234f32d4a5f180d6b009daf6dbc9bdfed7db9844
     }
 }

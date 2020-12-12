@@ -22,14 +22,16 @@ def main(target):
         # print("\nfinish testing on feature generating")
 
 
-        # print("start test on making making features\n")
-        # bf.main()
-        # print("\nfinished")
+        print("start test on making features\n")
+        bf.test()
+        print("\nfinished")
 
     elif target == "check":
         print("start performing checking on the processed data")
         dm.check()
         print("checking process has been performed")
+    else:
+        print("The command you enter is not correct")
 
 if __name__ == "__main__":
     target = sys.argv[-1]

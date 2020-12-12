@@ -1,11 +1,11 @@
 # code pulled from vignette: http://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#quick-start
 
 # install packages
-if (!requireNamespace("BiocManager", quietly = TRUE))
-  install.packages("BiocManager")
-BiocManager::install("DESeq2")
-BiocManager::install("pasilla")
-BiocManager::install("apeglm")
+# if (!requireNamespace("BiocManager", quietly = TRUE))
+#   install.packages("BiocManager")
+# BiocManager::install("DESeq2")
+# BiocManager::install("pasilla")
+# BiocManager::install("apeglm")
 
 # ---------------- IMPORTS ---------------- #
 
