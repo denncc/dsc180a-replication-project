@@ -6,6 +6,7 @@
     }, 
     "r_script_dir": "./src/features/r_scripts/test.R",
     "sraruntable_dir": "./data/raw/SraRunTable.csv",
+    "lfc_data_dir": "./data/features/lfc_data.csv",
     "features": {
         "deseq_cts_matrix_dir": "./data/features/deseq_cts.tsv",
         "covariates": {
@@ -18,9 +19,46 @@
             "brain_regions": ["AnCg", "nAcc", "DLPFC"],
             "disorders_abbr": ["MD", "BP", "SZ"],
             "num": 3
+<<<<<<< HEAD
         }
     },
     "test": {
         "kallisto_out": "./test/test_data/processed/kallisto"
+=======
+        },
+        "subcoldata": [
+            "./data/features/subcoldata/subcoldata_AnCg_MD.csv",
+            "./data/features/subcoldata/subcoldata_AnCg_BP.csv",
+            "./data/features/subcoldata/subcoldata_AnCg_SZ.csv",
+            "./data/features/subcoldata/subcoldata_nAcc_MD.csv",
+            "./data/features/subcoldata/subcoldata_nAcc_BP.csv",
+            "./data/features/subcoldata/subcoldata_nAcc_SZ.csv",
+            "./data/features/subcoldata/subcoldata_DLPFC_MD.csv",
+            "./data/features/subcoldata/subcoldata_DLPFC_BP.csv",
+            "./data/features/subcoldata/subcoldata_DLPFC_SZ.csv"
+        ],
+        "subcts" : [
+            "./data/features/subcts/subcts_AnCg_MD.csv",
+            "./data/features/subcts/subcts_AnCg_BP.csv",
+            "./data/features/subcts/subcts_AnCg_SZ.csv",
+            "./data/features/subcts/subcts_nAcc_MD.csv",
+            "./data/features/subcts/subcts_nAcc_BP.csv",
+            "./data/features/subcts/subcts_nAcc_SZ.csv",
+            "./data/features/subcts/subcts_DLPFC_MD.csv",
+            "./data/features/subcts/subcts_DLPFC_BP.csv",
+            "./data/features/subcts/subcts_DLPFC_SZ.csv"
+        ], 
+        "lrt": [
+            "./data/features/LRT/paper/AnCg_MD.csv",
+            "./data/features/LRT/paper/AnCg_BP.csv",
+            "./data/features/LRT/paper/AnCg_SZ.csv",
+            "./data/features/LRT/paper/nAcc_MD.csv",
+            "./data/features/LRT/paper/nAcc_BP.csv",
+            "./data/features/LRT/paper/nAcc_SZ.csv",
+            "./data/features/LRT/paper/DLPFC_MD.csv",
+            "./data/features/LRT/paper/DLPFC_BP.csv",
+            "./data/features/LRT/paper/DLPFC_SZ.csv"
+        ]
+>>>>>>> 234f32d4a5f180d6b009daf6dbc9bdfed7db9844
     }
 }
