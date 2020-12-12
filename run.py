@@ -16,12 +16,6 @@ def main(target):
         dm.test()
         print("finished running on the test target")
 
-
-        # print("start testing on feature generating\n")
-        # bf.test_r()
-        # print("\nfinish testing on feature generating")
-
-
         print("start test on making features\n")
         bf.test()
         print("\nfinished")

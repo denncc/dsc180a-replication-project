@@ -19,17 +19,17 @@ brs <- c("AnCg", "nAcc", "DLPFC")
 ds <- c("MD", "BP", "SZ")
 dn <- c("Major Depression", "Bipolar Disorder", "Schizophrenia")
 
-for (i in c(1, 2, 3)) {
-  for (j in c(1, 2, 3)) {
+for (i in c(1)) {
+  for (j in c(1)) {
     # import our data
     dataname <- paste(brs[i], paste(ds[j], "csv", sep = "."), sep = "_")
     print(dataname)
     
-    ctsdir = paste("./data/features/subcts/", paste("subcts_", dataname, sep = ""), sep = "")
+    ctsdir = paste("./test/test_data/features/subcts/", paste("subcts_", dataname, sep = ""), sep = "")
     cts <- as.matrix(read.csv(ctsdir,row.names="target_id"))
     print(ctsdir)
     
-    coldatadir = paste("./data/features/subcoldata/", paste("subcoldata_", dataname, sep = ""), sep = "")
+    coldatadir = paste("./test/test_data/features/subcoldata/", paste("subcoldata_", dataname, sep = ""), sep = "")
     coldata <- read.csv(coldatadir , row.names = "Run")
     coldata$brain_region <- factor(coldata$brain_region)
     coldata$Disorder <- factor(coldata$Disorder)
@@ -79,7 +79,7 @@ for (i in c(1, 2, 3)) {
     # carries out VST
     vstname = gsub(" ", ".", paste("Disorder", dn[j], "vs", "Control", sep = "_"))
     
-    outdir = paste("./data/features/LRT/paper", dataname, sep = "/")
+    outdir = paste("./test/test_data/features/LRT/paper", dataname, sep = "/")
     print(outdir)
     write.csv(res, outdir)
   }

@@ -109,7 +109,6 @@ def make_coldata_test():
     This methood doesn't have an input, but rather takes in SraRunTable.csv to build the input covariates for 
     DESeq object
     """
-    print(sraruntable_dir)
     df = pd.read_csv(sraruntable_dir).set_index("Run")
     df = df.iloc[:16,]
     # df = df[df.columns.to_list()[:16]]
@@ -119,7 +118,7 @@ def make_coldata_test():
     # print("Determine again if there is null value. \n", df.isna().sum())
 
     cts_df = pd.read_csv("./test/test_data/test_cts.csv", sep="\t").set_index("target_id")
-    print(cts_df)
+
     for i in range(num_cov):
         for j in range(num_cov):
             cond = (df.brain_region == brain_regions[i]) & (df.Disorder.isin(["Control", disorders[j]]))
@@ -164,7 +163,8 @@ def main():
         os.makedirs("./data/features")
     make_cts()
     make_coldata()
-    subprocess.call(["R", ""])
+    command = "Rscript ./src/features/r_scripts/lfc.R"
+    os.system(command)
     return
 
 
@@ -174,3 +174,6 @@ def test():
     """
     make_cts_test()
     make_coldata_test()
+    command = "Rscript ./test/test_r/test_lfc.R"
+    os.system(command)
+    return
