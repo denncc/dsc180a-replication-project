@@ -51,6 +51,26 @@ def make_cts():
     # print(abundances_dir)
     return
 
+def make_cts_test():
+    """
+    This method doesn't have an input, but rather takes 352 abundance.tsv in the processed
+    Kallisto directory, and makes a matrix that counts different subfeatures.
+    """
+    abundances_dirs = os.listdir(kallisto_out_dir)
+    abundances_dirs.sort()
+    # cols_name = pd.read_csv(os.path.join(kallisto_out_dir, abundances_dirs[0], "abundance.tsv"), sep="\t").target_id
+    # print(cols_name)
+    result = pd.DataFrame()
+    for pair in abundances_dirs:
+        abundances_dir = os.path.join(kallisto_out_dir, pair, "abundance.tsv")
+        df = pd.read_csv(abundances_dir, sep="\t")
+        df = df.set_index("target_id")
+        est_counts = df.est_counts
+        result[pair] = est_counts.round(0).astype(int)
+    result.to_csv(deseq_cts_matrix_dir, sep="\t")
+    # print(abundances_dir)
+    return
+
 def make_coldata():
     """
     This methood doesn't have an input, but rather takes in SraRunTable.csv to build the input covariates for 
@@ -75,6 +95,15 @@ def main():
     """
     Main function to call on other methods in this file
     """
-    # make_cts()
-    make_coldata()
+    if not os.path.exists("./data/features"):
+        os.makedirs("./data/features")
+    make_cts()
+    # make_coldata()
     return
+
+
+def test():
+    """
+    Test function to check build features
+    """
+    make_cts_test()

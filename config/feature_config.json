@@ -19,5 +19,8 @@
             "disorders_abbr": ["MD", "BP", "SZ"],
             "num": 3
         }
+    },
+    "test": {
+        "kallisto_out": "./test/test_data/processed/kallisto"
     }
 }

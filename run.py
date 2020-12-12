@@ -9,10 +9,12 @@ import src.features.build_features as bf
 def main(target):
     if target == "run.py":
         dm.main()
+        bf.main()
         print("run the whole project")
     elif target == "test":
-        # dm.test()
-        # print("finished running on the test target")
+        print("start test on making datasets")
+        dm.test()
+        print("finished running on the test target")
 
 
         # print("start testing on feature generating\n")
@@ -20,9 +22,9 @@ def main(target):
         # print("\nfinish testing on feature generating")
 
 
-        print("start test on making cts matrix for DESeq2\n")
-        bf.main()
-        print("\nfinished")
+        # print("start test on making making features\n")
+        # bf.main()
+        # print("\nfinished")
 
     elif target == "check":
         print("start performing checking on the processed data")

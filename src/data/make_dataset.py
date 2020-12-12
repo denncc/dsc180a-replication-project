@@ -125,6 +125,21 @@ def kallisto_quant(output, input1, input2):
     os.system(command)
     return output
 
+# quantify the sequences using kallisto
+def kallisto_quant_test(output, input1, input2):
+    '''
+    Quantify the RNA-sequence using kallisto
+    '''
+    # print(input1[23:-11])
+    output = os.path.join(output, input1[23:-11])
+    # print(output)
+    if not os.path.exists(output):
+        os.makedirs(output)
+    command = f'{kallisto_dir} quant -i {kallisto_idx_dir} -o {output} -t 8 {input1} {input2}'
+    print(command)
+    os.system(command)
+    return output
+
 
 # main function
 def main():
@@ -132,7 +147,7 @@ def main():
     datas, reference = data_retrieve()
     # it turned out that the test file can only run on the whole dataset, so we skip FastQC
     print(len(datas))
-    fastqc_datas = datas[332:]
+    fastqc_datas = datas
     kallisto_datas = datas[21:]
     # print(fastqc_datas[0])
     # print(kallisto_datas[0])
@@ -157,12 +172,13 @@ def test():
     """
     print("run on the test set")
     datas, reference = data_retrieve_test()
+    print(datas)
     sample = datas
     # for factqc, the test file is truncated so it cannot be ran
 
     # kallisto
-    # for pair in sample:
-    #     kallisto_quant(test_processed_dir, pair[0], pair[1])
+    for pair in sample:
+        kallisto_quant_test(test_processed_dir, pair[0], pair[1])
 
 
 def check():
